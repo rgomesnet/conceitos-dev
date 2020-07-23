@@ -1,0 +1,47 @@
+html,
+body,
+#app {
+    height: 100%;
+    margin: 0;
+}
+
+#appNAO-VALE {
+    display: flex;
+    flex-direction: row;
+    /* column posiciona os itens no eixo Y, row posiciona os itens no eixo X */
+    align-items: center;
+    /*  Alinha os itens no eixo contrário no valor atribuído ao flex-direction */
+    /* Se o flex-direction está posicionando os itens ao eixo Y, o align-items alinha os itens no eixo X*/
+    justify-content: center;
+    /* Alinha os itens no mesmo eixo do valor atribuído ao flex-direction */
+}
+
+#app {
+    display: flex;
+    /* flex-wrap: wrap; */
+    /* Quebra a linha */
+}
+
+.box {
+    width: 200px;
+    height: 60px;
+    margin: 5px;
+    /* flex-grow: 1;  /* Indica que o elemento aceita ser aumentado para ocupar todo o espço */
+    /* flex-shrink: 1;  Indica se o elemento tem a capacidade de se espemer diante da largura. Com 0 ele adiciona a barra de rolagem, com 1 ele se espreme */
+    /* flex: 1;/* Essa propriedade substituí as duas acima, sendo o primeiro valor para flex-grow e o segundo valor para o flex-shrink */
+}
+
+.red {
+    background: #f00;
+    order: 1;
+}
+
+.green {
+    background: #00ff00;
+    order: 2;
+}
+
+.blue {
+    background-color: #00f;
+    order: 0;
+}

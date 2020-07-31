@@ -5,7 +5,7 @@ import ICreateUserDTO from "@models/users/dtos/ICreateUserDTO";
 
 import User from "@models/users/infra/typeorm/entities/User";
 
-class UserRepository implements IUserRepository {
+class FakeUserRepository implements IUserRepository {
   private users: User[] = [];
 
   public async all(): Promise<User[]> {
@@ -36,4 +36,4 @@ class UserRepository implements IUserRepository {
   }
 }
 
-export default UserRepository;
+export default FakeUserRepository;

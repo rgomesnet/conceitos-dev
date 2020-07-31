@@ -6,14 +6,23 @@ import { isUuid } from 'uuidv4';
 import AppError from '@shared/errors/AppError';
 import FakeHashProvider from '../infra/providers/HashProvider/fakes/FakeHashProvider';
 
+let fakeUserRepository: FakeUserRepository;
+let hasProvider: FakeHashProvider;
+let createUserService: CreateUserService;
+let service: AuthenticateUserService;
+
 describe('AuthenticateUserService', () => {
 
-  it('Should be able to authenticate', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const hasProvider = new FakeHashProvider();
+  beforeEach(() => {
 
-    const createUserService = new CreateUserService(fakeUserRepository, hasProvider);
-    const service = new AuthenticateUserService(fakeUserRepository, hasProvider);
+    fakeUserRepository = new FakeUserRepository();
+    hasProvider = new FakeHashProvider();
+    createUserService = new CreateUserService(fakeUserRepository, hasProvider);
+    service = new AuthenticateUserService(fakeUserRepository, hasProvider);
+
+  });
+
+  it('Should be able to authenticate', async () => {
 
     const user = await createUserService.execute({
       email: 'renato@rgomes.net',
@@ -33,9 +42,6 @@ describe('AuthenticateUserService', () => {
   });
 
   it('Should not be able to authenticate', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const hasProvider = new FakeHashProvider();
-    const service = new AuthenticateUserService(fakeUserRepository, hasProvider);
 
     await expect(service.execute({
       email: 'email@email.com',
@@ -44,11 +50,6 @@ describe('AuthenticateUserService', () => {
   });
 
   it('Should not be able to authenticate with wrong password', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const hasProvider = new FakeHashProvider();
-
-    const createUserService = new CreateUserService(fakeUserRepository, hasProvider);
-    const service = new AuthenticateUserService(fakeUserRepository, hasProvider);
 
     await createUserService.execute({
       email: 'renato@rgomes.net',

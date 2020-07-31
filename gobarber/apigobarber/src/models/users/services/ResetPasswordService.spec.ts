@@ -1,13 +1,11 @@
 import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import ResetPasswordService from './ResetPasswordService';
-import FakeMailProvider from '@shared/providers/MailProvider/fakes/FakeMailProvider';
 import AppError from '@shared/errors/AppError';
 import FakeUserTokenRepository from '../repositories/fakes/FakeUserTokenRepository';
 import FakeHashProvider from '../infra/providers/HashProvider/fakes/FakeHashProvider';
 
 
 let fakeRepository: FakeUserRepository;
-let fakeMailProvider: FakeMailProvider;
 let fakeUserTokenRepository: FakeUserTokenRepository;
 let service: ResetPasswordService;
 let fakeHashProvider: FakeHashProvider;
@@ -17,19 +15,16 @@ describe('SendForgotPasswordEmailService', () => {
   beforeEach(() => {
     fakeUserTokenRepository = new FakeUserTokenRepository();
     fakeRepository = new FakeUserRepository();
-    fakeMailProvider = new FakeMailProvider();
     fakeHashProvider = new FakeHashProvider();
 
     service = new ResetPasswordService(
       fakeRepository,
-      fakeMailProvider,
       fakeUserTokenRepository,
-      fakeHashProvider
+      fakeHashProvider,
     );
   })
 
   it('Should be able to reset the password using your email', async () => {
-    const sendMail = jest.spyOn(fakeMailProvider, 'send');
 
     const user = await fakeRepository.create({
       name: 'John Doe',

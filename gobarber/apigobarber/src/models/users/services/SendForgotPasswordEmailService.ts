@@ -3,6 +3,7 @@ import IUserTokenRepository from '../repositories/IUserTokenRepository';
 import IMailProvider from '@shared/providers/MailProvider/models/IMailProvider';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+import path from 'path';
 
 interface IRequest {
   email: string;
@@ -18,20 +19,38 @@ class SendForgotPasswordEmailService {
     private mailProvider: IMailProvider,
 
     @inject('UserTokenRepository')
-    private userTokenRepository: IUserTokenRepository
-  ) {
+    private userTokenRepository: IUserTokenRepository) {
   }
 
   public async execute({ email }: IRequest): Promise<void> {
-    const checkUserExists = await this.repository.findByEmail(email);
-    if (!checkUserExists) {
+    const user = await this.repository.findByEmail(email);
+    if (!user) {
       throw new AppError('User does not exists.');
     }
 
-    const { token } = await this.userTokenRepository.generate(checkUserExists.id);
+    const { token } = await this.userTokenRepository.generate(user.id);
 
-    await this.mailProvider.send(email,
-      `Pedido de recuperação de senha recebido: ${token}`);
+    const forgotPasswordTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'forgot_password.hbs'
+    );
+
+    await this.mailProvider.send({
+      to: {
+        name: user.name,
+        email: user.email
+      },
+      subject: '[GoBarber] Recuperação de senha',
+      template: {
+        file: forgotPasswordTemplate,
+        variables: {
+          name: user.name,
+          link: `http://localhost:3000/reset_password=${token}`
+        }
+      }
+    });
   }
 }
 

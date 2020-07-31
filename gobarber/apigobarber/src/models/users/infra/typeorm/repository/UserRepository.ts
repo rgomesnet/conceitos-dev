@@ -9,6 +9,11 @@ export default class UserRepository implements IUserRepository {
   constructor() {
     this.repository = getRepository<User>(User);
   }
+  
+  public async all(): Promise<User[] | undefined> {
+    const users = await this.repository.find();
+    return users;
+  }
 
   public async findById(id: string): Promise<User | undefined> {
     const user = await this.repository.findOne({ where: { id } });

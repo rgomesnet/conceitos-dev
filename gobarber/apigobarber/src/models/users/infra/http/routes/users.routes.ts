@@ -5,6 +5,7 @@ import uploadConfig from '@config/upload';
 import UserController from '../controllers/UserController';
 
 const usersRouter = Router();
+
 const userController = new UserController();
 const upload = multer(uploadConfig);
 

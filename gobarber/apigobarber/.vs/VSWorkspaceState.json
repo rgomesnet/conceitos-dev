@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\config",
+    "\\src\\models",
+    "\\src\\models\\users",
+    "\\src\\models\\users\\repositories",
+    "\\src\\models\\users\\repositories\\fakes"
+  ],
+  "SelectedNode": "\\src\\models\\users\\repositories\\IUserRepository.ts",
+  "PreviewInSolutionExplorer": false
+}

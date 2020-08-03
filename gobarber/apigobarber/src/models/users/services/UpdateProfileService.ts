@@ -31,8 +31,6 @@ class UpdateProfileService {
         password
     }: Request): Promise<User | undefined> {
 
-        console.log('old_password', old_password);
-
         let user = await this.repository.findByEmail(email);
 
         if (user && user.id !== user_id) {

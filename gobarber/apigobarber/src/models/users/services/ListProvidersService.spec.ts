@@ -1,16 +1,20 @@
 import AppError from "@shared/errors/AppError";
 import FakeUserRepository from "../repositories/fakes/FakeUserRepository";
 import ListProvidersService from "./ListProvidersService";
+import FakeCacheProvider from "@shared/providers/CacheProvider/fakes/FakeCacheProvider";
 
 let fakeUserRepository: FakeUserRepository;
 let listProvidersService: ListProvidersService;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe('ShowProfileService', () => {
 
     beforeEach(() => {
         fakeUserRepository = new FakeUserRepository();
+        fakeCacheProvider = new FakeCacheProvider();
         listProvidersService = new ListProvidersService(
-            fakeUserRepository
+            fakeUserRepository,
+            fakeCacheProvider
         );
     });
 

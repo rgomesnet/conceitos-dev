@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { Request, Response } from 'express';
+import { classToClass } from 'class-transformer';
 import CreateUserService from '@models/users/services/CreateUserService';
 import UpdateUserAvatarService from '@models/users/services/UpdateUserAvatarService';
 import UserRepository from '../../typeorm/repository/UserRepository';
@@ -35,8 +36,6 @@ export default class UserController {
       avatarFilename: file.filename,
     });
 
-    delete userUpdated.password;
-
-    return response.json(userUpdated);
+    return response.json(classToClass(userUpdated));
   }
 }

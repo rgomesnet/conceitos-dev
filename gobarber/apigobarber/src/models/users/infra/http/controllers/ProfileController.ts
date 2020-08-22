@@ -14,12 +14,13 @@ export default class ProfileController {
 
     public async update(request: Request, response: Response) {
         const {
-            user_id,
             name,
             email,
             old_password,
             password
         } = request.body;
+
+        const user_id = request.user.id
 
         const updateProfileService = container.resolve(UpdateProfileService);
 

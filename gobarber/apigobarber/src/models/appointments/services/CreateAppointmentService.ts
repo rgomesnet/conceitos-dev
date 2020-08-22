@@ -1,8 +1,10 @@
-import { startOfHour, isBefore, getHours } from 'date-fns';
+import { startOfHour, isBefore, getHours, format, getYear, getMonth, getDay } from 'date-fns';
 import Appointment from '@models/appointments/infra/typeorm/entities/Appointment';
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
+import INotificationRepository from '@models/notifications/repositories/INotificationRepository';
 import AppError from '@shared/errors/AppError';
 import { injectable, inject } from 'tsyringe';
+import ICacheProvider from '@shared/providers/CacheProvider/models/ICacheProvider';
 
 interface IRequest {
   provider_id: string;
@@ -12,11 +14,16 @@ interface IRequest {
 
 @injectable()
 class CreateAppointmentService {
+
   constructor(
     @inject('AppointmentRepository')
-    private repository: IAppointmentRepository) {
-    this.repository = repository;
-  }
+    private appointmentRepository: IAppointmentRepository,
+
+    @inject('NotificationRepository')
+    private notificationRepository: INotificationRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider) { }
 
   public async execute({ provider_id, user_id, date }: IRequest): Promise<Appointment> {
 
@@ -35,7 +42,7 @@ class CreateAppointmentService {
       throw new AppError('Appointments available only between 8 a.m. and 5 p.m.');
     }
 
-    const findAppointmentInSameDate = await this.repository.findByDate(
+    const findAppointmentInSameDate = await this.appointmentRepository.findByDate(
       appointmentDate,
     );
 
@@ -43,11 +50,21 @@ class CreateAppointmentService {
       throw new AppError('This appointment has been already booked');
     }
 
-    const appointment = await this.repository.create({
+    const appointment = await this.appointmentRepository.create({
       provider_id,
       user_id,
       date: appointmentDate,
     });
+
+    const dateFormat = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm");
+
+    await this.notificationRepository.create({
+      recipient_id: provider_id,
+      content: `Novo agendamento para dia ${dateFormat}h`
+    });
+
+    const cacheKey = `provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-d')}`;
+    await this.cacheProvider.invalidade(cacheKey);
 
     return appointment;
   }

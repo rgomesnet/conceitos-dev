@@ -2,12 +2,14 @@ import FakeUserRepository from '../repositories/fakes/FakeUserRepository';
 import CreateUserService from './CreateUserService';
 import AppError from '@shared/errors/AppError';
 import BCryptHashProvider from '../infra/providers/HashProvider/implementations/BCryptHashProvider';
+import FakeCacheProvider from '@shared/providers/CacheProvider/fakes/FakeCacheProvider';
 
 describe('CreateUserService', () => {
   it('Should be able to create a new User', async () => {
     const fakeRepository = new FakeUserRepository();
     const hasProvider = new BCryptHashProvider();
-    const service = new CreateUserService(fakeRepository, hasProvider);
+    const fakeCacheProvider = new FakeCacheProvider();
+    const service = new CreateUserService(fakeRepository, hasProvider, fakeCacheProvider);
 
     const newUser = await service.execute({
       email: "email@email.com",
@@ -21,7 +23,8 @@ describe('CreateUserService', () => {
   it('Should not be able to create a user with the same email', async () => {
     const fakeRepository = new FakeUserRepository();
     const hasProvider = new BCryptHashProvider();
-    const service = new CreateUserService(fakeRepository, hasProvider);
+    const fakeCacheProvider = new FakeCacheProvider();
+    const service = new CreateUserService(fakeRepository, hasProvider, fakeCacheProvider);
 
     const newUser = await service.execute({
       email: "email@email.com",

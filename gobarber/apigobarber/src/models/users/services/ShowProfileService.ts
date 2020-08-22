@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 import User from '@models/users/infra/typeorm/entities/User';
 import AppError from '@shared/errors/AppError';
 import IUserRepository from '../repositories/IUserRepository';
+import { classToClass } from 'class-transformer';
 
 interface Request {
     user_id: string;
@@ -24,9 +25,7 @@ class ShowProfileService {
             throw new AppError('User not found.');
         }
 
-        delete user.password;
-
-        return user;
+        return classToClass(user);
     }
 }
 

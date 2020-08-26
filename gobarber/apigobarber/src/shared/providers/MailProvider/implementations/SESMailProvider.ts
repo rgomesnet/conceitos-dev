@@ -17,7 +17,9 @@ class SESMailProvider implements IMailProvider {
         this.client = nodemailer.createTransport({
             SES: new aws.SES({
                 apiVersion: '2020-12-01',
-                region: 'sa-east-1'
+                region: 'sa-east-1',
+                accessKeyId: process.env.MAIL_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.MAIL_AWS_SECRET_ACCESS_KEY
             }),
         });
     }

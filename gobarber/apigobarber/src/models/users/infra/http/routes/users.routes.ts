@@ -13,8 +13,11 @@ usersRouter.get('/', userController.get);
 usersRouter.post('/', userController.create);
 
 const upload = multer(uploadConfig.multer);
+
 usersRouter.patch('/avatar',
   ensureAuthenticated,
   upload.single('avatar'),
-  userController.update);
+  userController.update
+);
+
 export default usersRouter;

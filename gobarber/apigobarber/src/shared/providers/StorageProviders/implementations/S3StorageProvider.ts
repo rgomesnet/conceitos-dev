@@ -12,6 +12,8 @@ class S3StorageProvider implements IStorageProvider {
     constructor() {
         this.client = new aws.S3({
             region: 'sa-east-1',
+            accessKeyId: process.env.STORAGE_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.STORAGE_AWS_SECRET_ACCESS_KEY
         });
     }
 
@@ -27,14 +29,19 @@ class S3StorageProvider implements IStorageProvider {
             throw new AppError('File not found');
         }
 
-        await this.client
-            .putObject({
-                Bucket: uploadConfig.config.aws.bucket,
-                Key: file,
-                ACL: 'public-read',
-                Body: fileContent,
-                ContentType
-            }).promise();
+        try {
+            await this.client
+                .putObject({
+                    Bucket: uploadConfig.config.aws.bucket,
+                    Key: file,
+                    ACL: 'public-read',
+                    Body: fileContent,
+                    ContentType
+                }).promise();
+        }
+        catch (err) {
+            console.log(err);
+        }
 
         return file;
     }
@@ -47,7 +54,6 @@ class S3StorageProvider implements IStorageProvider {
                 Key: file
             }).promise();
     }
-
 }
 
 export default S3StorageProvider;

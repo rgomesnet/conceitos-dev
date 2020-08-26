@@ -5,7 +5,7 @@ import IFindInDayFromProviderDTO from "../dtos/IFindInDayFromProviderDTO";
 
 interface IAppointmentRepository {
   create(dto: ICreateAppointmentDTO): Promise<Appointment>;
-  findByDate(date: Date): Promise<Appointment | undefined>;
+  findByDate(date: Date, provider_id: string): Promise<Appointment | undefined>;
   findInMonthFromProvider(
     data: IFindInMonthFromProviderDTO,
   ): Promise<Appointment[]>;

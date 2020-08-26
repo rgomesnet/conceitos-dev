@@ -23,7 +23,7 @@ export default class UserController {
       password,
     });
 
-    return response.json(user);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {

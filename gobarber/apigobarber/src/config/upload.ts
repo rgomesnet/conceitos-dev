@@ -1,7 +1,5 @@
 import multer, { StorageEngine } from 'multer';
 import path from 'path';
-import crypto from 'crypto';
-import { string } from '@hapi/joi';
 
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
@@ -44,7 +42,7 @@ export default {
   config: {
     disk: {},
     aws: {
-      bucket: 'https://rgomesnet.s3-sa-east-1.amazonaws.com'
+      bucket: 'rgomesnet'
     }
   }
 

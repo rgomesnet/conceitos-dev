@@ -134,7 +134,7 @@ const Dashboard: React.FC = () => {
             isAfter(parseISO(appointment.date), dateNow)
         );
 
-    }, [selectedDate, appointments]);
+    }, [appointments]);
 
     return (
         <Container>

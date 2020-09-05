@@ -48,11 +48,15 @@ class S3StorageProvider implements IStorageProvider {
 
     public async delete(file: string): Promise<void> {
 
-        await this.client
-            .deleteObject({
-                Bucket: uploadConfig.config.aws.bucket,
-                Key: file
-            }).promise();
+        try {
+            await this.client
+                .deleteObject({
+                    Bucket: uploadConfig.config.aws.bucket,
+                    Key: file
+                }).promise();
+        } catch (error) {
+
+        }
     }
 }
 

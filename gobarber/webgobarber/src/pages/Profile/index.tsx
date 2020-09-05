@@ -11,7 +11,6 @@ import { useHistory, Link } from 'react-router-dom';
 import api from '../../services/api';
 import { useToast } from '../../hooks/ToastContext';
 import { useAuth } from '../../hooks/AuthContext';
-import { da } from 'date-fns/locale';
 
 interface ProfileFormData {
     name: string;
